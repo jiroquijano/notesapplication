@@ -2,8 +2,11 @@ const fs = require('fs');
 const chalk = require('chalk');
 
 const loadNote = ()=>{
-    const bufferData = fs.readFileSync('./notes.json');
-    return bufferData.toString().length > 0 ? JSON.parse(bufferData) : [];
+    if(fs.existsSync('./notes.json')){
+        const bufferData = fs.readFileSync('./notes.json');
+        return bufferData.toString().length > 0 ? JSON.parse(bufferData) : [];
+    }
+    return [];
 };
 
 const saveNote = (notes) =>{
@@ -37,7 +40,7 @@ const removeNote = function (title){
 const listNotes = () => {
     const notes = loadNote();
     console.log(chalk.yellow(`===Your notes===`));
-    notes.forEach(note=>console.log(`- ${note.title}`));
+    if(notes.length>0) notes.forEach(note=>console.log(`- ${note.title}`));
     console.log(chalk.yellow(`=================`));
 };
 
